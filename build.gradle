@@ -1,0 +1,71 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.2.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+plugins {
+    id 'nu.studer.jooq' version '3.0.2'
+}
+
+group = 'com.accenture'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+apply plugin: 'java'
+apply plugin: 'nu.studer.jooq'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-web-services'
+    implementation 'org.springframework.boot:spring-boot-starter-jooq'
+    runtimeOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'org.postgresql:postgresql'
+    compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
+    compileOnly 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    compile 'org.jooq:jooq'
+    jooqRuntime 'org.postgresql:postgresql:9.4-1201-jdbc41'
+
+    implementation 'org.flywaydb:flyway-core'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
+
+    testImplementation 'io.cucumber:cucumber-java:4.7.1'
+}
+
+jooq {
+    sample(sourceSets.main) {
+        jdbc {
+            url = 'jdbc:postgresql://localhost:5432/docker_test'
+            driver = 'org.postgresql.Driver'
+            user = 'postgres'
+            password = '123'
+        }
+        generator {
+            name = 'org.jooq.codegen.DefaultGenerator'
+            database {
+                inputSchema = 'products'
+                includes = '.*'
+                excludes = ''
+                inputSchema = 'public'
+            }
+            target {
+                packageName = 'com.accenture.gradlejooq.domain'
+            }
+        }
+    }
+}

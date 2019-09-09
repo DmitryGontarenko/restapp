@@ -1,0 +1,19 @@
+server:
+  port: 8090
+
+spring:
+  datasource:
+    url:  jdbc:postgresql://localhost:5432/docker_test
+    username: postgres
+    password: 123
+  jpa:
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+        jdbc:
+          lob:
+          non_contextual_creation: true
+        temp:
+          use_jdbc_metadata_defaults: false
+  flyway:
+    enabled: true
