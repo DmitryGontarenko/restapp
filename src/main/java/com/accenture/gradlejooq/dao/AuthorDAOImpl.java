@@ -47,7 +47,12 @@ public class AuthorDAOImpl implements AuthorDAO {
 
     @Override
     public AuthorRecord updateById(AuthorRecord authorRecord, Integer id) {
-        return null;
+        return dsl.update(author)
+                .set(author.FIRST_NAME, authorRecord.getFirstName())
+                .set(author.LAST_NAME, authorRecord.getLastName())
+                .where(author.ID.eq(id))
+                .returning()
+                .fetchOne();
     }
 
     @Override

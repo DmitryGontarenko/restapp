@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -43,6 +44,14 @@ public class AuthorServiceImpl implements AuthorService {
         return authorDAO.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException(MessagesConstant.RECORD_NOT_FOUND))
                 .into(AuthorResponse.class);
+    }
+
+    @Override
+    public AuthorResponse updateAuthorById(Map<String, Object> map, Integer id) {
+        AuthorRecord authorRecord = authorDAO.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException(MessagesConstant.RECORD_NOT_FOUND));
+        authorRecord.fromMap(map);
+        return authorDAO.updateById(authorRecord, id).into(AuthorResponse.class);
     }
 
     @Override

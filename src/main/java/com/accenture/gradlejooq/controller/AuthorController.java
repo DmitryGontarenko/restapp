@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class AuthorController {
@@ -50,6 +51,13 @@ public class AuthorController {
                                                  @RequestBody AuthorRequest authorRequest) {
         AuthorResponse authorResponse = authorService.createAuthor(authorRequest);
         return new ResponseEntity<>(authorResponse, HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/authors/{id}")
+    public ResponseEntity<ResponseModel> updateAuthorById(@PathVariable("id") Integer id,
+                                                           @RequestBody Map<String, Object> map) {
+        AuthorResponse authorResponse = authorService.updateAuthorById(map, id);
+        return new ResponseEntity<>(new ResponseModel(Instant.now(), StatusConstant.SUCCESS, authorResponse), HttpStatus.OK);
     }
 
     @DeleteMapping("/authors/{id}")
