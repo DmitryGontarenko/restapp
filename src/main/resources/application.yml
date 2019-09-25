@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url:  jdbc:postgresql://localhost:5432/docker_test
+    url:  jdbc:postgresql://localhost:5432/restapp
     username: postgres
     password: 123
   jpa:
